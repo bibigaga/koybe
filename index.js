@@ -33,9 +33,9 @@ const NEZHA_KEY = process.env.NEZHA_KEY || '';
 const ARGO_DOMAIN = process.env.ARGO_DOMAIN || '';
 const ARGO_AUTH = process.env.ARGO_AUTH || '';
 const ARGO_PORT = parseInt(process.env.ARGO_PORT) || 8001;
-const CFIP = process.env.CFIP || 'cdns.doon.eu.org';
-const CFPORT = process.env.CFPORT || 443;
-const NAME = process.env.NAME || 'gaga';
+const CFIP = process.env.CFIP || '104.17.135.61';
+const CFPORT = process.env.CFPORT || 8080;
+const NAME = process.env.NAME || '';
 
 // 运行目录准备
 if (!fs.existsSync(FILE_PATH)) {
