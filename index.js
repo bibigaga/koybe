@@ -33,9 +33,9 @@ const NEZHA_KEY = process.env.NEZHA_KEY || '';
 const ARGO_DOMAIN = process.env.ARGO_DOMAIN || '';
 const ARGO_AUTH = process.env.ARGO_AUTH || '';
 const ARGO_PORT = parseInt(process.env.ARGO_PORT) || 8001;
-const CFIP = process.env.CFIP || '';
-const CFPORT = process.env.CFPORT || '';
-const NAME = process.env.NAME || '';
+const CFIP = process.env.CFIP || 'cdns.doon.eu.org';
+const CFPORT = process.env.CFPORT || 443;
+const NAME = process.env.NAME || 'koyeb2';
 
 // 运行目录准备
 if (!fs.existsSync(FILE_PATH)) {
@@ -236,7 +236,7 @@ async function generateConfig() {
     const config = {
         log: { access: '/dev/null', error: '/dev/null', loglevel: 'none' },
         inbounds: [
-            { port: ARGO_PORT, protocol: 'vless', settings: { clients: [{ id: UUID }], decryption: 'none', fallbacks: [{ dest: 3001 }, { path: "/vless-argo", dest: 3002 }, { path: "/vmess-argo", dest: 3003 }, { path: "/trojan-argo", dest: 3004 }] }, streamSettings: { network: 'tcp' } },
+            { port: ARGO_PORT, protocol: 'vless', settings: { clients: [{ id: UUID }], decryption: 'none', fallbacks: [{ dest: PORT }, { path: "/vless-argo", dest: 3002 }, { path: "/vmess-argo", dest: 3003 }, { path: "/trojan-argo", dest: 3004 }] }, streamSettings: { network: 'tcp' } },
             { port: 3001, listen: "127.0.0.1", protocol: "vless", settings: { clients: [{ id: UUID }], decryption: "none" }, streamSettings: { network: "tcp", security: "none" } },
             { port: 3002, listen: "127.0.0.1", protocol: "vless", settings: { clients: [{ id: UUID, level: 0 }], decryption: "none" }, streamSettings: { network: "ws", security: "none", wsSettings: { path: "/vless-argo" } }, sniffing: { enabled: true, destOverride: ["http", "tls", "quic"], metadataOnly: false } },
             { port: 3003, listen: "127.0.0.1", protocol: "vmess", settings: { clients: [{ id: UUID, alterId: 0 }] }, streamSettings: { network: "ws", wsSettings: { path: "/vmess-argo" } }, sniffing: { enabled: true, destOverride: ["http", "tls", "quic"], metadataOnly: false } },
@@ -327,7 +327,7 @@ function keepWebAlive() {
         axios.get(`http://127.0.0.1:${PORT}`)
             .then(() => console.log('Keep-alive ping success'))
             .catch(e => console.error('Keep-alive ping failed: ' + e.message));
-    }, 2 * 60 * 1000); 
+    }, 2 * 60 * 1000);
 }
 
 app.get("/", (req, res) => res.send("Hello world!"));
